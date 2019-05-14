@@ -1,0 +1,32 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-cloud-user
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver #当前驱动
+    url: jdbc:mysql://127.0.0.1:3306/cloud-test?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC #链接mysql的地址
+    username: root #mysql用户名
+    password: 123456 #mysql密码
+    type: com.zaxxer.hikari.HikariDataSource #使用的hikari数据源
+    hikari:
+      read-only: false #链接只读数据库时设置为ture，保证安全
+      connection-timeout: 3000 #等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+      idle-timeout: 600000 #一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分
+      max-lifetime: 1800000 #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒
+      maximum-pool-size: 60 #最大空闲连接数
+      minimum-idle: 10 #最小空闲连接数
+mybatis:
+  mapper-locations: classpath:/sqlmap/*.xml
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+feign:
+  hystrix:
+    enabled: true #开启hystrix

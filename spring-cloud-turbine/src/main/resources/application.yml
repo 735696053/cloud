@@ -1,0 +1,17 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: spring-cloud-turbine
+turbine:
+  appConfig: spring-cloud-user #配置需要监控的服务名
+  aggregator:
+    cluster-config: default
+  cluster-name-expression: new String("default")
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
